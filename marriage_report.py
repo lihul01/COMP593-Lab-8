@@ -40,9 +40,7 @@ def get_married_couples():
     married_couples = cur.fetchall()
     con.close()
 
-    for person1, person2, start_date, type in married_couples:
-        print(f'{person1} has been a {type} of {person2} since {start_date}.')
-    return
+    return married_couples
 
 def save_married_couples_csv(married_couples, csv_path):
     """Saves list of married couples to a CSV file, including both people's 
