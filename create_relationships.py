@@ -59,6 +59,24 @@ def populate_relationships_table():
         )
         VALUES (?, ?, ?, ?);
     """
+    fake = Faker()
+
+    person1_id = randint(1, 200)
+
+    person2_id = randint(1, 200)
+    while person2_id == person1_id:
+        person2_id = randint(1, 200)
+
+    rel_type = choice(('freind', 'spouse', 'partner', 'relative'))
+
+    start_date = fake.data_between(start_date='-50y', end_date='today')
+
+    new_relationship = (person1_id, person2_id, rel_type, start_date)
+
+    cur.execute(add_relationship_query, new_relationship)
+
+    con.commit()
+    con.close()
     return 
 
 if __name__ == '__main__':
