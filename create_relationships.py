@@ -44,8 +44,6 @@ def create_relationships_table():
 
 def populate_relationships_table():
     """Adds 100 random relationships to the DB"""
-    # TODO: Function body
-    # Hint: See example code in lab instructions entitled "Populate the Relationships Table"
     con = sqlite3.connect('social_network.db')
     cur = con.cursor()
 
