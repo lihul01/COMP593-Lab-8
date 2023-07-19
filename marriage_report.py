@@ -24,22 +24,23 @@ def get_married_couples():
     Returns:
         list: (name1, name2, start_date) of married couples 
     """
-    # TODO: Function body
-    # Hint: See example code in lab instructions entitled "Get a List of Relationships"
-    con = sqlite3.connect('social_network.db')
+    con = sqlite3.connect(db_path)
     cur = con.cursor()
 
-    all_relationships_query = """
-        SELECT person1.name, person2.name, start_date, type FROM relationships
+    married_couples_query = """
+        SELECT person1.name, person2.name, start_date, type
+        FROM relationships
         JOIN people person1 ON person1_id = person1.id
-        JOIN people person2 ON person2_id = person2.id;
+        JOIN people person2 ON person2_id = person2.id
+        WHERE type = 'spouse';
     """
-    cur.execute(all_relationships_query)
 
-    all_relationships = cur.fetchall()
+    cur.execute(married_couples_query)
+
+    married_couples = cur.fetchall()
     con.close()
 
-    for person1, person2, start_date, type in all_relationships:
+    for person1, person2, start_date, type in married_couples:
         print(f'{person1} has been a {type} of {person2} since {start_date}.')
     return
 

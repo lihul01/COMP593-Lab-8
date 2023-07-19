@@ -21,7 +21,7 @@ def main():
 
 def create_relationships_table():
     """Creates the relationships table in the DB"""
-    con = sqlite3.connect('social_network.db')
+    con = sqlite3.connect(db_path)
     cur = con.cursor()
 
     create_relationships_tbl_query = """
@@ -31,7 +31,7 @@ def create_relationships_table():
             person1_id  INTEGER NOT NULL,
             person2_id  INTEGER NOT NULL,
             type        TEXT NOT NULL,
-            start_date DATE NOT NULL,
+            start_date  DATE NOT NULL,
             FOREIGN KEY (person1_id) REFERENCES people (id),
             FOREIGN KEY (person2_id) REFERENCES people (id)
         );
@@ -44,34 +44,35 @@ def create_relationships_table():
 
 def populate_relationships_table():
     """Adds 100 random relationships to the DB"""
-    con = sqlite3.connect('social_network.db')
+    con = sqlite3.connect(db_path)
     cur = con.cursor()
 
-    add_relationship_query = """
-        INSERT INTO relationships
-        (
-            person1_id,
-            person2_id,
-            type,
-            start date
-        )
-        VALUES (?, ?, ?, ?);
-    """
-    fake = Faker()
+    for i in range(0, 100):
+        add_relationship_query = """
+            INSERT INTO relationships
+            (
+                person1_id,
+                person2_id,
+                type,
+                start_date
+            )
+            VALUES (?, ?, ?, ?);
+        """
+        fake = Faker()
 
-    person1_id = randint(1, 200)
+        person1_id = randint(1, 200)
 
-    person2_id = randint(1, 200)
-    while person2_id == person1_id:
         person2_id = randint(1, 200)
+        while person2_id == person1_id:
+            person2_id = randint(1, 200)
 
-    rel_type = choice(('freind', 'spouse', 'partner', 'relative'))
+        rel_type = choice(('freind', 'spouse', 'partner', 'relative'))
 
-    start_date = fake.data_between(start_date='-50y', end_date='today')
+        start_date = fake.date_between(start_date='-50y', end_date='today')
 
-    new_relationship = (person1_id, person2_id, rel_type, start_date)
+        new_relationship = (person1_id, person2_id, rel_type, start_date)
 
-    cur.execute(add_relationship_query, new_relationship)
+        cur.execute(add_relationship_query, new_relationship)
 
     con.commit()
     con.close()
