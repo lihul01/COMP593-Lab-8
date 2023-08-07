@@ -51,8 +51,6 @@ def save_married_couples_csv(married_couples, csv_path):
         married_couples (list): (name1, name2, start_date) of married couples
         csv_path (str): Path of CSV file
     """
-    # TODO: Function body
-    # Hint: We did this in Lab 7.
     df = pd.DataFrame(married_couples)
     headings = ('Person 1', 'Person 2', 'Anniversary')
     df.to_csv(csv_path, header=headings)
